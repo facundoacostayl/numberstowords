@@ -73,7 +73,7 @@ namespace ConsoleApp1
             private int numberStrLength;
             private int numberStrLengthElevated;
 
-            public void setCurrentDigit(int number, int numberElevated) { this.currentDigit = number / numberElevated; }
+            public void SetCurrentDigit(int number, int numberElevated) { this.currentDigit = number / numberElevated; }
             public void SetNumberStrLength(int number) { this.numberStrLength = number.ToString().Length; }
 
             public void SetNumberStrLengthElevated(int numberLength) { this.numberStrLengthElevated = (int)Math.Pow(10, numberLength - 1); }
@@ -93,7 +93,6 @@ namespace ConsoleApp1
             User user = new User();
 
             Console.WriteLine("Enter a number (Max: 9999)");
-
             user.SetNumber(Int32.Parse(Console.ReadLine()));
             int userNumber = user.GetNumber();
 
@@ -111,57 +110,69 @@ namespace ConsoleApp1
                 return;
             }
 
+            string[] unidades = numberList.GetUnidades();
+            string[] decenasA = numberList.GetDecenasA();
+            string[] decenasB = numberList.GetDecenasB();
+            string[] centenasYMiles = numberList.GetCentenasYMiles();
+
+            int userNumberStrLength = 0;
+            int userNumberStrLengthElevated = 0;
+            int currentDigit = 0;
             Boolean flag = false;
+
             while (userNumber >= 0)
             {
-                userNumberAsStringLength = userNumber.ToString().Length;
+                numberConverter.SetNumberStrLength(userNumber);
+                userNumberStrLength = numberConverter.GetNumberStrLength();
                 if (userNumber > 0)
                 {
 
-                    value = (int)Math.Pow(10, userNumberAsStringLength - 1);
-                    temp = userNumber / value;
+                    numberConverter.SetNumberStrLengthElevated(userNumberStrLength);
+                    numberConverter.SetCurrentDigit(userNumber, numberConverter.GetNumberStrLengthElevated());
+
+                    userNumberStrLengthElevated = numberConverter.GetNumberStrLengthElevated();
+                    currentDigit = numberConverter.GetCurrentDigit();
 
                 }
 
-                switch (userNumberAsStringLength)
+                switch (userNumberStrLength)
                 {
                     case 1:
-                        Console.Write(" " + unidades[temp - 1] + " ");
+                        Console.Write(" " + unidades[currentDigit - 1] + " ");
 
                         break;
                     case 2:
                         if (userNumber >= 10 && userNumber < 20)
                         {
-                            userNumber = userNumber % value;
+                            userNumber = userNumber % userNumberStrLengthElevated;
 
                             Console.Write(" " + decenasA[userNumber] + " ");
 
                             flag = true;
-
                         }
                         else
                         {
-                            Console.Write(" " + decenasB[temp - 1] + " ");
+                            
+                            Console.Write(" " + decenasB[currentDigit - 1] + " ");
                         }
 
                         break;
                     case 3:
-                        Console.Write(unidades[temp - 1] + " " + centenasYMiles[1]);
+                        Console.Write(unidades[currentDigit - 1] + " " + centenasYMiles[1]);
                         break;
                     case 4:
-                        Console.Write(" " + unidades[temp - 1] + " " + centenasYMiles[2] + " ");
+                        Console.Write(" " + unidades[currentDigit - 1] + " " + centenasYMiles[2] + " ");
                         break;
                 }
 
-
-                if (userNumber == value)
+                if (userNumber == userNumberStrLengthElevated)
                 {
                     Console.Write(" ");
                     break;
                 }
                 else
                 {
-                    userNumber = userNumber % value;
+                    userNumber = userNumber % userNumberStrLengthElevated;
                 }
 
                 if (userNumber == 0 || flag == true)
@@ -170,6 +181,8 @@ namespace ConsoleApp1
                 }
 
             }
+
+            Console.ReadLine();
 
         }
     }

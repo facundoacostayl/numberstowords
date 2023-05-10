@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace UnitTestProject2
 {
-    /*[TestClass]
+    [TestClass]
     public class UnitTest1
     {
 
@@ -21,10 +21,10 @@ namespace UnitTestProject2
             string output = "";
 
             //ACT
-            output = ConsoleApp1.Program.Main(input);
+            output = ConsoleApp1.Program.User.SetNumber();
 
             //ASSERT
             Assert.AreEqual("NOT LEAP", output);
         }
-    }*/
+    }
 }
